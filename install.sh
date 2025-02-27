@@ -37,16 +37,19 @@ sudo rm -rf .sleep
 sudo rm -rf .wakeup
 echo  -e "\033[36m [Info] \033[0m写入新的配置文件..."
 
+HOMEBREW_PREFIX=$(brew --prefix)
+BLUEUTIL="$HOMEBREW_PREFIX/bin/blueutil"
+
 touch .sleep
 touch .wakeup
 sudo chmod 777 .sleep
 sudo chmod 777 .wakeup
 cat>.sleep<<EOF
-/usr/local/bin/blueutil -p 0
+$BLUEUTIL -p 0
 networksetup -setairportpower en0 off
 EOF
 cat>.wakeup<<EOF
-/usr/local/bin/blueutil -p 1
+$BLUEUTIL -p 1
 until networksetup -getairportpower en0 | grep On > /dev/null
 do
 	networksetup -setairportpower en0 on
